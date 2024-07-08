@@ -22,4 +22,36 @@ class ChilexpressController extends Controller
             return response()->json(['error' => 'Failed to fetch regions'], $response->status());
         }
     }
+    public function cotizar(Request $request)
+    {
+        // Validar y recibir los datos de la solicitud
+        $data = $request->validate([
+            'originCountyCode' => 'required|string',
+            'destinationCountyCode' => 'required|string',
+            'package.weight' => 'required|numeric',
+            'package.height' => 'required|numeric',
+            'package.width' => 'required|numeric',
+            'package.length' => 'required|numeric',
+            'productType' => 'required|integer',
+            'contentType' => 'required|integer',
+            'declaredWorth' => 'required|numeric',
+            'deliveryTime' => 'required|integer',
+        ]);
+
+        // Configurar encabezados y realizar la solicitud
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Cache-Control' => 'no-cache',
+            'Ocp-Apim-Subscription-Key' => 'c17619e460b847429e8e7d031828c053',
+        ])->post('https://testservices.wschilexpress.com/rating/api/v1.0/rates/courier', $data);
+
+        // Obtener el cuerpo de la respuesta
+        $responseBody = $response->body();
+
+        // Devolver la respuesta en formato JSON
+        return response()->json([
+            'status' => $response->status(),
+            'body' => json_decode($responseBody, true),
+        ]);
+    }
 }
