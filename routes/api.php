@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChilexpressController;
 use App\Http\Controllers\StarkenController;
+use App\Http\Controllers\BlueExpress;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -17,5 +18,6 @@ Route::get('/obtenertarifasstarken', [StarkenController::class, 'obtenerTarifasS
 Route::get('/obtenervalorenvio', [StarkenController::class, 'obtenerValorEnvio']);
 
 
+Route::get('/obtenerregionesblueexpress', [BlueExpress::class, 'obtenerRegiones']);
 
 
